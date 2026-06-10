@@ -31,6 +31,12 @@ class VenueListView extends StatelessWidget {
         actions: [
           iconButton(
             context,
+            icon: Icons.event_note_rounded,
+            color: AppColor.iconTextColor,
+            onPressed: controller.openMyBookings,
+          ),
+          iconButton(
+            context,
             icon: Icons.logout_rounded,
             color: AppColor.iconTextColor,
             onPressed: controller.logout,

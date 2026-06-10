@@ -34,6 +34,8 @@ class VenueListViewModel extends GetxController {
   void openVenue(VenueModel venue) =>
       Get.toNamed(RouteName.venueDetail, arguments: venue);
 
+  void openMyBookings() => Get.toNamed(RouteName.myBookings);
+
   Future<void> logout() async {
     await _authRepository.logout();
     Session.clear();
