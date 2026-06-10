@@ -1,16 +1,13 @@
 import 'package:dio/dio.dart';
 
 abstract class BaseApiServices {
-  Future<Map<String, dynamic>?> getApi(String url);
+  Future<Response> getApi(String url);
 
-  Future<Map<String, dynamic>?> postApi(dynamic body, String url);
+  Future<Response> postApi(dynamic body, String url);
 
-  Future<Map<String, dynamic>?> deleteApi(dynamic body, String url);
+  Future<Response> deleteApi(dynamic body, String url);
 
-  Future<Map<String, dynamic>?> putApi(dynamic body, String url);
+  Future<Response> putApi(dynamic body, String url);
 
-  Future<Map<String, dynamic>?> multiPartApi(
-    FormData body,
-    String url,
-  );
+  Future<Response> multiPartApi(FormData body, String url);
 }

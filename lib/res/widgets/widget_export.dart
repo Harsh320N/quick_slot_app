@@ -8,4 +8,5 @@ export 'package:quick_slot_app/res/widgets/icon_widget.dart';
 export 'package:quick_slot_app/res/widgets/list_tile.dart';
 export 'package:quick_slot_app/res/widgets/padding_margin.dart';
 export 'package:quick_slot_app/res/widgets/spaces.dart';
+export 'package:quick_slot_app/res/widgets/state_views.dart';
 export 'package:quick_slot_app/res/widgets/text_styles.dart';
