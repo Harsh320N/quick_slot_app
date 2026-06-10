@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "285805045151",
+    "project_id": "quick-slot-app",
+    "storage_bucket": "quick-slot-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285805045151:android:105c8e698804ad76e449aa",
+        "android_client_info": {
+          "package_name": "com.example.quick_slot_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSp6BRJ0OtfKwuFrtt7D0eozvjf-yN5Dc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
