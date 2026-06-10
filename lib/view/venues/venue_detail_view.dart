@@ -41,19 +41,23 @@ class VenueDetailView extends StatelessWidget {
               if (slots.isEmpty) {
                 return emptyView(message: "No slots for this date.");
               }
-              return GridView.builder(
-                padding: paddingSymmetric(horizontal: 20.0, vertical: 16.0),
-                physics: const AlwaysScrollableScrollPhysics(),
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 12.0,
-                  crossAxisSpacing: 12.0,
-                  childAspectRatio: 1.55,
+              return RefreshIndicator(
+                color: AppColor.primaryColor,
+                onRefresh: controller.fetchSlots,
+                child: GridView.builder(
+                  padding: paddingSymmetric(horizontal: 20.0, vertical: 16.0),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 12.0,
+                    crossAxisSpacing: 12.0,
+                    childAspectRatio: 1.55,
+                  ),
+                  itemCount: slots.length,
+                  itemBuilder: (_, index) =>
+                      _slotChip(context, controller, slots[index]),
                 ),
-                itemCount: slots.length,
-                itemBuilder: (_, index) =>
-                    _slotChip(context, controller, slots[index]),
               );
             }),
           ),
