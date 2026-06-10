@@ -1,0 +1,11 @@
+export 'package:quick_slot_app/res/widgets/app_bars.dart';
+export 'package:quick_slot_app/res/widgets/button.dart';
+export 'package:quick_slot_app/res/widgets/circle_avatar.dart';
+export 'package:quick_slot_app/res/widgets/decoration.dart';
+export 'package:quick_slot_app/res/widgets/divider_widget.dart';
+export 'package:quick_slot_app/res/widgets/field_and_label.dart';
+export 'package:quick_slot_app/res/widgets/icon_widget.dart';
+export 'package:quick_slot_app/res/widgets/list_tile.dart';
+export 'package:quick_slot_app/res/widgets/padding_margin.dart';
+export 'package:quick_slot_app/res/widgets/spaces.dart';
+export 'package:quick_slot_app/res/widgets/text_styles.dart';
