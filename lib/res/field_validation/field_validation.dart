@@ -14,6 +14,36 @@ class AppFieldValidation {
     }
   }
 
+  static String validateName(String name) {
+    if (name.trim().isEmpty) {
+      return "Name is Required";
+    } else if (name.trim().length < 2) {
+      return "Enter Valid Name";
+    } else {
+      return "";
+    }
+  }
+
+  static String validatePassword(String password) {
+    if (password.isEmpty) {
+      return "Password is Required";
+    } else if (password.length < 6) {
+      return "Password must be at least 6 characters";
+    } else {
+      return "";
+    }
+  }
+
+  static String validateConfirmPassword(String password, String confirm) {
+    if (confirm.isEmpty) {
+      return "Confirm your Password";
+    } else if (password != confirm) {
+      return "Passwords do not match";
+    } else {
+      return "";
+    }
+  }
+
   static String validateMobileNumber(String mobile) {
     String pattern = r'^[0-9]*$';
     RegExp regex = RegExp(pattern);
