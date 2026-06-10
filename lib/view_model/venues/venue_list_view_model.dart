@@ -31,6 +31,9 @@ class VenueListViewModel extends GetxController {
 
   String get greeting => 'Hi, ${Session.userName ?? 'Player'}';
 
+  void openVenue(VenueModel venue) =>
+      Get.toNamed(RouteName.venueDetail, arguments: venue);
+
   Future<void> logout() async {
     await _authRepository.logout();
     Session.clear();

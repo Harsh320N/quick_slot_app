@@ -63,7 +63,11 @@ class VenueListView extends StatelessWidget {
             padding: paddingSymmetric(horizontal: 20.0, vertical: 14.0),
             itemCount: venues.length,
             separatorBuilder: (context, index) => verticalSpace(12.0),
-            itemBuilder: (_, index) => _venueCard(venues[index]),
+            itemBuilder: (_, index) => GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => controller.openVenue(venues[index]),
+              child: _venueCard(venues[index]),
+            ),
           ),
         );
       }),
