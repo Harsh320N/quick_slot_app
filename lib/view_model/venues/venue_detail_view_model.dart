@@ -3,10 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:quick_slot_app/data/response/api_response.dart';
 import 'package:quick_slot_app/model/slot_model.dart';
 import 'package:quick_slot_app/model/venue_model.dart';
+import 'package:quick_slot_app/repository/booking_repository.dart';
 import 'package:quick_slot_app/repository/slot_repository.dart';
+import 'package:quick_slot_app/utils/utils.dart';
 
 class VenueDetailViewModel extends GetxController {
   final SlotRepository _slotRepository = SlotRepository();
+  final BookingRepository _bookingRepository = BookingRepository();
   final VenueModel venue;
 
   VenueDetailViewModel(this.venue);
@@ -14,6 +17,7 @@ class VenueDetailViewModel extends GetxController {
   final Rx<DateTime> selectedDate = DateTime.now().obs;
   final Rx<ApiResponse<List<SlotModel>>> slots =
       ApiResponse<List<SlotModel>>.loading().obs;
+  final RxnInt bookingHour = RxnInt();
 
   DateTime get _todayDate {
     final now = DateTime.now();
@@ -55,4 +59,26 @@ class VenueDetailViewModel extends GetxController {
   }
 
   void nextDay() => setDate(selectedDate.value.add(const Duration(days: 1)));
+
+  Future<void> book(SlotModel slot) async {
+    if (bookingHour.value != null || slot.isBooked) return;
+    bookingHour.value = slot.startHour;
+    try {
+      final result = await _bookingRepository.book(
+        venueId: venue.id,
+        date: apiDate,
+        startHour: slot.startHour,
+      );
+      Utils.snack(text: result.message);
+      if (result.status == BookingStatus.success ||
+          result.status == BookingStatus.alreadyBooked) {
+        await fetchSlots();
+      }
+    } catch (_) {
+      Utils.snack(text: 'Could not complete the booking. Please try again.');
+    } finally {
+      bookingHour.value = null;
+    }
+  }
 }
+

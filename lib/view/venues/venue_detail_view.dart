@@ -5,6 +5,7 @@ import 'package:quick_slot_app/model/slot_model.dart';
 import 'package:quick_slot_app/model/venue_model.dart';
 import 'package:quick_slot_app/res/colors/app_color.dart';
 import 'package:quick_slot_app/res/widgets/widget_export.dart';
+import 'package:quick_slot_app/utils/utils.dart';
 import 'package:quick_slot_app/view_model/venues/venue_detail_view_model.dart';
 
 class VenueDetailView extends StatelessWidget {
@@ -51,7 +52,8 @@ class VenueDetailView extends StatelessWidget {
                   childAspectRatio: 1.55,
                 ),
                 itemCount: slots.length,
-                itemBuilder: (_, index) => _slotChip(slots[index]),
+                itemBuilder: (_, index) =>
+                    _slotChip(context, controller, slots[index]),
               );
             }),
           ),
@@ -172,35 +174,140 @@ class VenueDetailView extends StatelessWidget {
     );
   }
 
-  Widget _slotChip(SlotModel slot) {
+  Widget _slotChip(
+    BuildContext context,
+    VenueDetailViewModel controller,
+    SlotModel slot,
+  ) {
     final booked = slot.isBooked;
-    return Container(
-      alignment: Alignment.center,
-      decoration: circularBoxDecoration(
-        containerColor: booked ? AppColor.lightModeColor : AppColor.white,
-        circularRadius: 10.0,
-        border: Border.all(
-          color: booked ? AppColor.dividerColor : AppColor.primaryColor,
-          width: 1.3,
+    return Obx(() {
+      final loading = controller.bookingHour.value == slot.startHour;
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: booked ? null : () => _confirmBooking(context, controller, slot),
+        child: Container(
+          alignment: Alignment.center,
+          decoration: circularBoxDecoration(
+            containerColor: booked ? AppColor.lightModeColor : AppColor.white,
+            circularRadius: 10.0,
+            border: Border.all(
+              color: booked ? AppColor.dividerColor : AppColor.primaryColor,
+              width: 1.3,
+            ),
+          ),
+          child: loading
+              ? Utils.loader()
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    labels(
+                      text: slot.startTime,
+                      color: booked ? AppColor.grey : AppColor.iconTextColor,
+                      fontWeight: FontWeight.w700,
+                      size: 15.0,
+                    ),
+                    verticalSpace(2.0),
+                    labels(
+                      text: booked ? "Booked" : "Available",
+                      color: booked ? AppColor.grey : AppColor.primaryColor,
+                      size: 10.0,
+                    ),
+                  ],
+                ),
+        ),
+      );
+    });
+  }
+
+  void _confirmBooking(
+    BuildContext context,
+    VenueDetailViewModel controller,
+    SlotModel slot,
+  ) {
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColor.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Padding(
+          padding: paddingAll(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labels(
+                text: "Confirm booking",
+                fontWeight: FontWeight.w700,
+                size: 18.0,
+              ),
+              verticalSpace(14.0),
+              _confirmRow("Venue", controller.venue.name),
+              verticalSpace(8.0),
+              _confirmRow("Date", controller.displayDate),
+              verticalSpace(8.0),
+              _confirmRow("Time", "${slot.startTime} - ${slot.endTime}"),
+              verticalSpace(22.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: Get.back,
+                      child: Container(
+                        height: 48.0,
+                        alignment: Alignment.center,
+                        decoration: circularBoxDecoration(
+                          containerColor: AppColor.lightModeColor,
+                          circularRadius: 10.0,
+                        ),
+                        child: labels(
+                          text: "Cancel",
+                          fontWeight: FontWeight.w600,
+                          size: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  horizontalSpace(12.0),
+                  Expanded(
+                    child: button(
+                      text: "Confirm",
+                      height: 48.0,
+                      width: double.infinity,
+                      fontWeight: FontWeight.w600,
+                      onTap: () {
+                        Get.back();
+                        controller.book(slot);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          labels(
-            text: slot.startTime,
-            color: booked ? AppColor.grey : AppColor.iconTextColor,
-            fontWeight: FontWeight.w700,
-            size: 15.0,
+    );
+  }
+
+  Widget _confirmRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 60.0,
+          child: labels(text: label, color: AppColor.grey, size: 13.0),
+        ),
+        horizontalSpace(8.0),
+        Expanded(
+          child: labels(
+            text: value,
+            fontWeight: FontWeight.w600,
+            size: 13.5,
+            maxLine: 2,
           ),
-          verticalSpace(2.0),
-          labels(
-            text: booked ? "Booked" : "Available",
-            color: booked ? AppColor.grey : AppColor.primaryColor,
-            size: 10.0,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
